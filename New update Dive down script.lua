@@ -5,7 +5,7 @@ local SavedBaseCoords = nil
 local DivingActive = false 
 local MoneyFarmActive = false
 local DiveConnection = nil
-local BaseRadius = 150 -- Радиус сбора денег вокруг базы
+local BaseRadius = 100 
 
 -- [[ SERVICES ]]
 local Players = game:GetService("Players")
@@ -15,19 +15,16 @@ local UserInputService = game:GetService("UserInputService")
 
 -- [[ UI ROOT ]]
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "SigmaBase_v20"
+ScreenGui.Name = "SigmaPrivate_v21"
 ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.ResetOnSpawn = false
 
--- [[ KEY SYSTEM ]]
+-- [[ KEY SYSTEM (Large Font) ]]
 local KeyFrame = Instance.new("Frame")
 KeyFrame.Size = UDim2.new(0, 420, 0, 240)
 KeyFrame.Position = UDim2.new(0.5, -210, 0.5, -120)
 KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
 KeyFrame.Parent = ScreenGui
-
-local KeyCorner = Instance.new("UICorner")
-KeyCorner.Parent = KeyFrame
 
 local KeyTitle = Instance.new("TextLabel")
 KeyTitle.Size = UDim2.new(1, 0, 0, 50)
@@ -54,43 +51,19 @@ EnterBtn.Size = UDim2.new(0, 140, 0, 45)
 EnterBtn.Position = UDim2.new(0.12, 0, 0.72, 0)
 EnterBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 80)
 EnterBtn.Text = "SUBMIT"
-EnterBtn.TextColor3 = Color3.new(1, 1, 1)
 EnterBtn.Font = Enum.Font.GothamBold
-EnterBtn.TextSize = 16
+EnterBtn.TextColor3 = Color3.new(1, 1, 1)
 EnterBtn.Parent = KeyFrame
-
-local GetKeyBtn = Instance.new("TextButton")
-GetKeyBtn.Size = UDim2.new(0, 140, 0, 45)
-GetKeyBtn.Position = UDim2.new(0.54, 0, 0.72, 0)
-GetKeyBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-GetKeyBtn.Text = "GET KEY"
-GetKeyBtn.TextColor3 = Color3.new(1, 1, 1)
-GetKeyBtn.Font = Enum.Font.GothamBold
-GetKeyBtn.TextSize = 16
-GetKeyBtn.Parent = KeyFrame
 
 -- [[ MAIN MENU ]]
 local MainFrame = Instance.new("Frame")
 MainFrame.Size = UDim2.new(0, 520, 0, 380)
 MainFrame.Position = UDim2.new(0.3, 0, 0.25, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
-MainFrame.BackgroundTransparency = 0.2
 MainFrame.Visible = false
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.Parent = ScreenGui
-
-local MainCorner = Instance.new("UICorner")
-MainCorner.Parent = MainFrame
-
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.Text = "DIVE DOWN PRIVATE 🚀"
-Title.TextColor3 = Color3.fromRGB(0, 255, 255)
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 20
-Title.BackgroundTransparency = 1
-Title.Parent = MainFrame
 
 local function CreateBtn(text, pos, color, sizeX)
     local btn = Instance.new("TextButton")
@@ -103,18 +76,16 @@ local function CreateBtn(text, pos, color, sizeX)
     btn.TextSize = 13
     btn.Parent = MainFrame
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = btn
     return btn
 end
 
 local DiveBtn = CreateBtn("FAST DESCENT (-350)", UDim2.new(0.05, 0, 0.18, 0), Color3.fromRGB(0, 100, 200))
-local MoneyBtn = CreateBtn("[BETA] BASE MONEY FARM: OFF", UDim2.new(0.05, 0, 0.34, 0), Color3.fromRGB(180, 150, 0))
+local MoneyBtn = CreateBtn("[BETA] MY MONEY ONLY: OFF", UDim2.new(0.05, 0, 0.34, 0), Color3.fromRGB(180, 150, 0))
 local SaveBtn = CreateBtn("SAVE BASE POS", UDim2.new(0.05, 0, 0.50, 0), Color3.fromRGB(60, 60, 60))
 local ReturnBtn = CreateBtn("RETURN TO BASE", UDim2.new(0.05, 0, 0.66, 0), Color3.fromRGB(150, 40, 40))
-local CopyBtn = CreateBtn("COPY DISCORD LINK", UDim2.new(0.05, 0, 0.84, 0), Color3.fromRGB(88, 101, 242), 470)
 
--- Avatar (Sigma)
+-- Avatar Image
 local Avatar = Instance.new("ImageLabel")
 Avatar.Size = UDim2.new(0, 70, 0, 70)
 Avatar.Position = UDim2.new(0.5, 10, 0.15, 0)
@@ -122,7 +93,7 @@ Avatar.Image = "rbxassetid://13444002492"
 Avatar.BackgroundTransparency = 1
 Avatar.Parent = MainFrame
 
--- Update Log
+-- Update Log (Credits)
 local LogFrame = Instance.new("ScrollingFrame")
 LogFrame.Size = UDim2.new(0, 230, 0, 180)
 LogFrame.Position = UDim2.new(0.5, 10, 0.35, 0)
@@ -133,13 +104,11 @@ LogFrame.Parent = MainFrame
 local LogText = Instance.new("TextLabel")
 LogText.Size = UDim2.new(1, -10, 1.5, 0)
 LogText.Position = UDim2.new(0, 5, 0, 5)
-LogText.Text = "CREDITS:\nScript by: Sigma\n\nUPDATES (v2.0):\n- [FIXED] Farm Only at Base\n- [BETA] Auto-Money Collector\n- English Fast Descent\n- Big Font Key System\n- Save Base to Enable Farm"
+LogText.Text = "CREDITS:\nScript by: Sigma\n\nUPDATES (v2.1):\n- [FIX] Farm ONLY MY money\n- Added Owner Verification\n- English Buttons Applied\n- Key UI Font Size Up\n- Super Speed Descent"
 LogText.TextColor3 = Color3.new(1, 1, 1)
 LogText.Font = Enum.Font.GothamMedium
-LogText.TextSize = 12
+LogText.TextSize = 11
 LogText.TextWrapped = true
-LogText.TextXAlignment = Enum.TextXAlignment.Left
-LogText.TextYAlignment = Enum.TextYAlignment.Top
 LogText.BackgroundTransparency = 1
 LogText.Parent = LogFrame
 
@@ -149,29 +118,25 @@ EnterBtn.MouseButton1Click:Connect(function()
     if KeyInput.Text == CorrectKey then
         KeyFrame.Visible = false
         MainFrame.Visible = true
-    else
-        EnterBtn.Text = "WRONG KEY"
-        task.wait(1)
-        EnterBtn.Text = "SUBMIT"
     end
 end)
 
--- Улучшенный Автофарм ДЕНЕГ ТОЛЬКО НА БАЗЕ
+-- ФУНКЦИЯ СБОРА ТОЛЬКО СВОИХ ДЕНЕГ
 MoneyBtn.MouseButton1Click:Connect(function()
     if MoneyFarmActive then
         MoneyFarmActive = false
-        MoneyBtn.Text = "[BETA] BASE MONEY FARM: OFF"
+        MoneyBtn.Text = "[BETA] MY MONEY ONLY: OFF"
         MoneyBtn.BackgroundColor3 = Color3.fromRGB(180, 150, 0)
     else
         if not SavedBaseCoords then
             MoneyBtn.Text = "SAVE BASE FIRST!"
-            task.wait(1.5)
-            MoneyBtn.Text = "[BETA] BASE MONEY FARM: OFF"
+            task.wait(1)
+            MoneyBtn.Text = "[BETA] MY MONEY ONLY: OFF"
             return
         end
         
         MoneyFarmActive = true
-        MoneyBtn.Text = "[BETA] BASE MONEY FARM: ON"
+        MoneyBtn.Text = "[BETA] MY MONEY ONLY: ON"
         MoneyBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 50)
         
         task.spawn(function()
@@ -180,32 +145,39 @@ MoneyBtn.MouseButton1Click:Connect(function()
                 local root = char and char:FindFirstChild("HumanoidRootPart")
                 
                 if root then
-                    -- Проверяем, не ушел ли игрок слишком далеко от базы
-                    local distFromBase = (root.Position - SavedBaseCoords.Position).Magnitude
-                    
-                    if distFromBase < BaseRadius then
-                        for _, obj in pairs(workspace:GetDescendants()) do
-                            if not MoneyFarmActive then break end
+                    -- Ищем по всей игре, но проверяем принадлежность
+                    for _, obj in pairs(workspace:GetDescendants()) do
+                        if not MoneyFarmActive then break end
+                        
+                        -- Проверка: это монета + она на нашей территории или в нашей папке
+                        if obj:IsA("BasePart") and (obj.Name:lower():find("money") or obj.Name:lower():find("coin")) then
                             
-                            -- Ищем монетки/деньги
-                            if obj:IsA("BasePart") and (obj.Name:lower():find("money") or obj.Name:lower():find("coin") or obj.Name:lower():find("cash")) then
-                                -- Собираем только если монета тоже близко к базе
-                                local coinDist = (obj.Position - SavedBaseCoords.Position).Magnitude
-                                if coinDist < BaseRadius then
-                                    root.CFrame = obj.CFrame
-                                    task.wait(0.3)
-                                end
+                            -- ПРОВЕРКА ВЛАДЕЛЬЦА (Самое важное!)
+                            local isMine = false
+                            if obj:FindFirstAncestor(LocalPlayer.Name) or (obj:FindFirstAncestor("Plots") and obj:FindFirstAncestor(LocalPlayer.Name)) then
+                                isMine = true
+                            end
+                            
+                            -- Если игра хранит владельца в атрибутах
+                            if obj:GetAttribute("Owner") == LocalPlayer.Name or obj:GetAttribute("OwnerID") == LocalPlayer.UserId then
+                                isMine = true
+                            end
+
+                            -- Если нашли именно свое - ТП
+                            if isMine then
+                                root.CFrame = obj.CFrame
+                                task.wait(0.2)
                             end
                         end
                     end
                 end
-                task.wait(1)
+                task.wait(0.5)
             end
         end)
     end
 end)
 
--- Fast Dive
+-- Fast Dive (-350)
 DiveBtn.MouseButton1Click:Connect(function()
     if DivingActive then
         DivingActive = false
@@ -242,13 +214,6 @@ ReturnBtn.MouseButton1Click:Connect(function()
     if SavedBaseCoords then
         LocalPlayer.Character.HumanoidRootPart.CFrame = SavedBaseCoords
     end
-end)
-
-CopyBtn.MouseButton1Click:Connect(function()
-    if setclipboard then setclipboard(DiscordLink) end
-    CopyBtn.Text = "LINK COPIED!"
-    task.wait(1)
-    CopyBtn.Text = "COPY DISCORD LINK"
 end)
 
 UserInputService.InputBegan:Connect(function(i, g)
